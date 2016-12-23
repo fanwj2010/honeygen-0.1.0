@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<honeynet request="create" mode="custom">
+   <name>dit2</name>
+   <net id="1">
+     <name>net0</name>
+   </net>
+
+   <honeypot id="1">
+        <name>pc1</name>
+        <interaction_level>low</interaction_level>
+        <if id="1" net="net0">
+             <name>eth0</name>
+             <mac_addr>00:00:00:00:00:12</mac_addr>
+             <ipv4>10.1.0.2/24</ipv4>
+        </if>
+        <service id="1">
+             <name>ssh</name>
+             <port>22</port>
+        </service>
+   </honeypot>
+   <honeypot id="4" request="add">
+        <name>pc4</name>
+        <interaction_level>low</interaction_level>
+        <if id="1" net="net0">
+             <name>eth0</name>
+             <mac_addr>00:00:00:00:00:12</mac_addr>
+             <ipv4>10.1.0.5/24</ipv4>
+        </if>
+   </honeypot>
+   <honeypot id="2">
+        <name>pc2</name>
+        <interaction_level>low</interaction_level>
+        <if id="1" net="net0">
+             <name>eth0</name>
+             <ipv4>10.1.0.3/24</ipv4>
+        </if>
+   </honeypot>
+   <honeypot id="3">
+        <name>pc3</name>
+        <if id="1" net="net0">
+             <name>eth0</name>
+             <ipv4>10.1.0.4/24</ipv4>
+        </if>
+   </honeypot>
+
+</honeynet>

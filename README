@@ -1,0 +1,4 @@
+#how to install, just run
+perl Makefile.PL
+make
+make install

@@ -1,0 +1,84 @@
+#!/usr/bin/perl -w
+package main;
+use XML::LibXML;
+
+use strict;
+use warnings;
+use common;
+use requestProcessor;
+use configurationEngine;
+use vnx_module;
+use honeyd_module;
+use deploymentEngine;
+#get the parameters
+my @paras = getParas(@ARGV);
+my $req_doc = $paras[1];
+my $parser = XML::LibXML->new();
+my $xml_req = $parser->parse_file($req_doc);
+my $root_req = $xml_req->getDocumentElement;
+my $bool_a = $root_req->hasAttribute( 'request' );
+my $request = "";
+if($bool_a == 1){
+   $request = $root_req->getAttribute('request');
+}
+my @nodes_req = $xml_req->getDocumentElement->nonBlankChildNodes();
+my @params;
+my $scenario_doc;
+
+
+#foreach my $para (@paras)
+if(("-t"~~ @paras)||("-g"~~ @paras)||("-c"~~ @paras)){
+    validate_schema($req_doc);
+    check_content($xml_req);
+}
+if(("-t" ~~ @paras)||("-g" ~~ @paras)){
+    my @nodes_req = $xml_req->findnodes('/honeynet/name');
+    my $scenario_name = $nodes_req[$#nodes_req]->textContent;
+    print "The request scenario name is [$scenario_name]\n";
+    if($request eq "del"){
+          delete_scenario($scenario_name);
+          exit 0;
+    }
+    if($request eq "create" || $request eq "add"){
+         my $boolean = $xml_req->exists('/honeynet/template');
+         if($boolean == 1){
+             #copy from template
+             my @nodes_req = $xml_req->findnodes('/honeynet/template');
+             my $template_name = $nodes_req[$#nodes_req]->textContent;
+             $scenario_doc = create_scenario_from_template($scenario_name, $template_name);
+         }
+         if ($boolean ==0){
+             #copy from script
+             $scenario_doc = create_scenario_from_script($req_doc,$scenario_name);
+         }
+         print "go..........\n";
+         @params=generate_conf($scenario_doc);
+    }
+    #indent_xml($scenario_name);
+    if($request eq "set"){
+       
+        @params=set_scenario(\$xml_req, $scenario_name);
+    }
+    
+}
+if("-t" ~~ @paras){
+    if($request eq "create"){    
+         deployment_scenario(@params);
+    }
+    if($request eq "set"){    
+         reconfiguration_scenario(@params);
+    }	
+}
+
+
+#foreach my $node_req (@nodes_req){
+#   my $node_name = $node_req->nodeName;
+#   if($node_name eq "name"){
+#       my $scenario_name = $node_req->textContent;
+#  
+#   }
+#}
+ 
+#initial
+#$xmL_scenario->toFile($scenario);
+print "\n";

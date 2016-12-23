@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<honeynet request="create">
+   <name>dit-vnx-n1</name>
+   
+   <net id="1">
+     <name>net0</name>
+     <network_ip_prefix>10.1.0.0/24</network_ip_prefix>
+   </net>
+   <net id="2">
+     <name>net1</name>
+     <network_ip_prefix>10.2.0.0/24</network_ip_prefix>
+   </net>
+
+   <router id="1">
+        <name>r1</name>
+        <if id="1" net="net0">
+             <name>eth0</name>
+             <ipv4>10.1.0.1/24</ipv4>
+        </if>
+        <if id="2" net="net1">
+             <name>eth1</name>
+             <ipv4>10.2.0.1/24</ipv4>
+        </if>
+        <route id="1" dev="eth1">
+           <dst>10.3.0.0/24</dst>
+           <gw>10.2.0.2</gw>
+        </route>
+        <operating_system>
+             <name>ubuntu</name>
+             <version>12.04</version>
+        </operating_system>
+   </router>
+   
+   <honeypot id="1">
+        <name>pc1</name>
+        <interaction_level>low</interaction_level>
+        <if id="1" net="net0">
+             <name>eth0</name>
+             <mac_addr>00:00:00:e0:db:1e</mac_addr>
+             <ipv4>10.1.0.2</ipv4>
+        </if>
+        <operating_system>
+             <name>ubuntu</name>
+             <version>12.04</version>
+        </operating_system>
+        <service id="1">
+             <name>telnet</name>
+             <port>22</port>
+        </service>
+   </honeypot>
+        
+</honeynet>

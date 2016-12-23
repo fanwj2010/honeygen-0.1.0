@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<honeynet>
+   <name>typeA</name>
+   <honeypot_quantity>2</honeypot_quantity>
+   <net id="1">
+     <name>net0</name>
+     <network_ip_addr>10.0.0.0/24</network_ip_addr>
+   </net>
+   <router id="1">
+      <name>r1</name>
+      <gw>192.168.1.1</gw>
+      <if id="1" net="net0">
+         <name>eth0</name>
+         <mac_addr>00:00:00:00:00:11</mac_addr>
+         <ipv4>10.0.0.1/24</ipv4>
+      </if>
+      <operating_system>
+           <name>ubuntu</name>
+           <version>12.04</version>
+      </operating_system>
+   </router>
+   <honeypot id="1">
+       <name>pc1</name>
+       <interaction_degree>high</interaction_degree>
+       <if id="1" net="net0">
+            <name>ethernet adapter</name>
+            <mac_addr>00:00:00:00:00:12</mac_addr>
+            <ipv4>10.0.0.2/24</ipv4>
+       </if>
+       <operating_system>
+           <name>windows2000</name>
+           <version>sp4</version>
+       </operating_system>
+       <software id="1">
+           <name>FoxMail</name>
+           <version>5.0</version>
+       </software>
+   </honeypot>
+
+    <honeypot id="2">
+        <name>pc2</name>
+        <interaction_degree>low</interaction_degree>
+        <if id="1" net="net0">
+             <name>eth0</name>
+             <mac_addr>00:00:00:00:00:13</mac_addr>
+             <ipv4>10.0.0.3/24</ipv4>
+        </if>
+        <operating_system>
+             <name>ubuntu</name>
+             <version>10.10</version>
+        </operating_system>
+        <service id="1">
+             <name>http</name>
+             <port>80</port>
+        </service>
+    </honeypot>
+
+</honeynet>

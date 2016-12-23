@@ -1,0 +1,8 @@
+#!/bin/bash
+make clean
+perl Makefile.PL
+make
+make install
+chmod a+x /usr/local/bin/HoneyGen
+mkdir /usr/share/honeygen
+cp -rf * /usr/share/honeygen
